@@ -8,23 +8,23 @@ import itemView from "../views/ItemView";
 export default {
   async index(request: Request, response: Response, next: NextFunction) {
     const itemRepository = getRepository(Item);
-    const refeicao = await itemRepository.find({ relations: ['imagens'] });
+    const refeicao = await itemRepository.find({ relations: ['imagem'] });
     return response.json(itemView.renderMany(refeicao));
   },
   async show(request: Request, response: Response, next: NextFunction) {
     const { id } = request.params;
     const itemRepository = getRepository(Item);
-    const item = await itemRepository.findOneOrFail(id, { relations: ['imagens'] });
+    const item = await itemRepository.findOneOrFail(id, { relations: ['imagem'] });
     return response.json(itemView.render(item));
   },
   async create(request: Request, response: Response, next: NextFunction) {
-    const { nome, preco, ingredientes, descricao, ativo, codigo, data_cadastro, data_modificacao_cadastro } = request.body;
+    const { nome } = request.body;
     const itemRepository = getRepository(Item);
     const requestImagens = request.files as Express.Multer.File[];
     const imagens = requestImagens.map((imagem) => {
       return { path: imagem.filename };
     });
-    const data = { nome, preco, ingredientes, descricao, ativo, codigo, data_cadastro, data_modificacao_cadastro, imagens };
+    const data = { nome, imagens };
     const schema = Yup.object().shape({
       nome: Yup.string().required(MensagemCampoVazio('nome')),
       imagens: Yup.array(
@@ -45,18 +45,18 @@ export default {
     return response.status(200).json(item);
   },
   async update(request: Request, response: Response, next: NextFunction) {
-    const { id, nome, preco, ingredientes, descricao, ativo } = request.body;
+    const { id, nome } = request.body;
     const itemRepository = getRepository(Item);
     const requestImagens = request.files as Express.Multer.File[];
     const imagens = requestImagens.map((imagem) => {
       return { path: imagem.filename };
     });
-    const data = { nome, preco, ingredientes, ativo, descricao, imagens };
+    const data = { nome, imagens };
     const schema = Yup.object().shape({
       nome: Yup.string().required(MensagemCampoVazio('nome')),
       imagem: Yup.array(
         Yup.object().shape({
-          path: Yup.string().required('Campo vazio')
+          path: Yup.string().required(MensagemCampoVazio('path'))
         })
       )
     });

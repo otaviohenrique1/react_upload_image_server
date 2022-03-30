@@ -8,8 +8,8 @@ const upload = multer(uploadConfig);
 
 routes.get('/item', itemController.index);
 routes.get('/item/:id', itemController.show);
-routes.post('/item', upload.array('imagens'), itemController.create);
-routes.put('/item/:id', upload.array('imagens'), itemController.update);
+routes.post('/item', upload.array('imagem'), itemController.create);
+routes.put('/item/:id', upload.array('imagem'), itemController.update);
 routes.delete('/item/:id', itemController.delete);
 
 export default routes;

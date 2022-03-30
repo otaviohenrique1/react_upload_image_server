@@ -6,6 +6,28 @@ import fs from "fs";
 
 export default {
   storage: multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, path.join(__dirname, '..', '..', 'uploads', 'fotos'))
+    },
+    filename: (request, file, cb) => {
+      // const { id, codigo } = request.body
+
+      // const fileName = `${id}-${codigo}-${crypto.randomBytes(3).toString('hex')}-${Date.now()}-${file.originalname}`;
+      const fileName = `${crypto.randomBytes(3).toString('hex')}-${Date.now()}-${file.originalname}`;
+      cb(null, fileName);
+    }
+  })
+};
+
+/*
+import { request } from "express";
+import multer from "multer";
+import path from "path";
+import crypto from 'crypto';
+import fs from "fs";
+
+export default {
+  storage: multer.diskStorage({
     destination: path.join(__dirname, '..', '..', 'uploads', 'fotos'),
     filename: (request, file, cb) => {
       // const { id, codigo } = request.body
@@ -16,6 +38,7 @@ export default {
     }
   })
 };
+*/
 
 /*
 import multer from 'multer'
