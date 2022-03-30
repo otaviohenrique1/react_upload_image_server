@@ -1,8 +1,6 @@
-import { request } from "express";
 import multer from "multer";
 import path from "path";
 import crypto from 'crypto';
-import fs from "fs";
 
 export default {
   storage: multer.diskStorage({
@@ -10,9 +8,6 @@ export default {
       cb(null, path.join(__dirname, '..', '..', 'uploads', 'fotos'))
     },
     filename: (request, file, cb) => {
-      // const { id, codigo } = request.body
-
-      // const fileName = `${id}-${codigo}-${crypto.randomBytes(3).toString('hex')}-${Date.now()}-${file.originalname}`;
       const fileName = `${crypto.randomBytes(3).toString('hex')}-${Date.now()}-${file.originalname}`;
       cb(null, fileName);
     }
